@@ -12,10 +12,10 @@ namespace ValidatorRight
         public Label labDate = new Label();
         public Label labTime = new Label();
         private Timer timer = new Timer();
-        private Dictionary<int, string> filesContainer = new Dictionary<int, string>();
-        public ValidatorDate(Label labDate, Label labTime, Dictionary<int, string> filesContainer)
+        private List<string> listId = new List<string>();
+        public ValidatorDate(Label labDate, Label labTime, List<string> listId)
         {
-            this.filesContainer = filesContainer;
+            this.listId = listId;
             timer.Interval=1000;
             this.labDate = labDate;
             this.labTime = labTime;
@@ -42,7 +42,7 @@ namespace ValidatorRight
         {
             if (labTime.Text == "23:00:00")
             {
-                foreach (int id in filesContainer.Keys)
+                foreach (string id in listId)
                     MessageBox.Show("The card with the number " + id + " is not attached to the validator at the output");
             }
         }

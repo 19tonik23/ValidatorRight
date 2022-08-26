@@ -31,7 +31,7 @@ namespace ValidatorRight
             this.selectStop = selectStop;
             valCheckPan = new ValidCheckPanel(validCheck);
             valTextCheck = new ValidatorTextCheck(textCheck);
-            valTimer = new ValidatorDate(labDate, labTime, filesContainer);
+            valTimer = new ValidatorDate(labDate, labTime, listId);
             busIcon = new BusMonitorIcon(BusMonitorIcon);
            
             CheckSound();
@@ -233,63 +233,46 @@ namespace ValidatorRight
             valTextCheck.textCheck.ForeColor = Color.White;
         }
 
-        
-        //коллекция карточек,которые были приложены к валидатору при входе
+        //добавление карточек в коллекцию при входе
+        private List<string> listId = new List<string>();
         private void FileContainerEnter(AllCards allCards)
         {
-            if (!ent_exit[allCards.cardIndex])
+            document.Load(filePath[allCards.cardIndex]);
+            string balance = "";
+            foreach (XmlNode node in document.DocumentElement.ChildNodes)
             {
-                document.Load(filePath[allCards.cardIndex]);
-                string[] str = new string[2];
-                foreach (XmlNode node in document.DocumentElement.ChildNodes)
-                {
-                    if (node.LocalName == "id")
-                    {
-                        str[0] = node.InnerText;
-                    }
 
-                    if (node.LocalName == "stop")
-                    {
-                        str[1] = node.InnerText;
-                    }
+                if (node.LocalName == "balance")
+                {
+                    balance = node.InnerText;
+                }
+               
+            }
+            foreach (XmlNode node in document.DocumentElement.ChildNodes)
+            {
+                if (node.LocalName == "id"& double.Parse(balance)>1)
+                {
+                    listId.Add(node.InnerText);
                 }
 
-                filesContainer.Add(int.Parse(str[0]), str[1]);
             }
-           
         }
 
-  
-        //итоговая коллекция карточек,которые не были приложены к валидатору при выходе после 
-        //контрольного времени
+        //удаление карточек из коллекции при выходе
         private void FileContainerExit(AllCards allCards)
         {
-            if (ent_exit[allCards.cardIndex])
+            document.Load(filePath[allCards.cardIndex]);
+            string currentId = ""; ;
+            foreach (XmlNode node in document.DocumentElement.ChildNodes)
             {
-                document.Load(filePath[allCards.cardIndex]);
-                string id="";
-                foreach (XmlNode node in document.DocumentElement.ChildNodes)
+                if (node.LocalName == "id")
                 {
-                    if (node.LocalName == "id")
-                    {
-                        id = node.InnerText;
-                    }
+                    currentId=node.InnerText;
                 }
 
-                List<int> list = new List<int>();
-                foreach(int Id in filesContainer.Keys){
-                    if (id == Id.ToString())
-                    {
-                        list.Add(Id);
-                    }
-                }
-
-                foreach(int index in list){
-                    filesContainer.Remove(index);
-                }
             }
+            listId.Remove(currentId);
+            
         }
-
-       
     }
 }
