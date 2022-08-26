@@ -262,16 +262,16 @@ namespace ValidatorRight
         private void FileContainerExit(AllCards allCards)
         {
             document.Load(filePath[allCards.cardIndex]);
-            string currentId = ""; ;
+           
             foreach (XmlNode node in document.DocumentElement.ChildNodes)
             {
                 if (node.LocalName == "id")
                 {
-                    currentId=node.InnerText;
+                    listId.Remove(node.InnerText);
                 }
 
             }
-            listId.Remove(currentId);
+            
             
         }
     }
