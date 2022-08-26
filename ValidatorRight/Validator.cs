@@ -20,8 +20,6 @@ namespace ValidatorRight
         private TextBox selectStop;
         private double fixSum = 0.5;
         private string[] filePath;
-        private Dictionary<int, string> filesContainer = new Dictionary<int, string>();
-        private bool[] ent_exit = new bool[] {false,false,false };
         private int cardIndex;
         public Validator(Panel validCheck, Label textCheck, Label labDate,
             
@@ -107,7 +105,6 @@ namespace ValidatorRight
                 fixSum = 0.5;
             }
             CalcBalance(fileBalance, fileStop,allCards);
-            ent_exit[allCards.cardIndex] = !ent_exit[allCards.cardIndex];
         }
 
         //вход-выход
